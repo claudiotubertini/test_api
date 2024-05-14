@@ -1,16 +1,21 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 import click
-from datetime import datetime
+from datetime import datetime, timedelta
 import pandas as pd
 import numpy as np
 from pathlib import Path
 
 # questo programma non lancia la seguente funzione che quindi va eseguita manualmente
 def init_db():
-    df = pd.DataFrame(np.random.randint(0,100,size=(100, 6)), columns=['data','ristorante','planned_hours','actual_hours', 'budget','sales'])
+    date_today = datetime.now()
+    days = pd.date_range(date_today, date_today + timedelta(9), freq='D')
+    df = pd.DataFrame(np.random.randint(0,100,size=(100, 4)), columns=['planned_hours','actual_hours', 'budget','sales'])
+    df2 = pd.DataFrame({'date': days, 'ristorante': range(1,11)})
+    df3 = pd.concat([df2]*10, ignore_index=True)
+    df4 = pd.concat([df3,df],axis=1)
     dir = Path.cwd()
-    df.to_csv(dir/'init_db.csv', index=False)
+    df4.to_csv(dir/'init_db.csv', index=False)
 
 # gruppo per eventuali sviluppi futuri
 @click.group()
