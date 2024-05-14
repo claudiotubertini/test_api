@@ -8,7 +8,7 @@ from pathlib import Path
 
 # questo programma non lancia la seguente funzione che quindi va eseguita manualmente
 def init_db():
-    df = pd.DataFrame(np.random.randint(0,100,size=(100, 4)), columns=['planned_hours','actual_hours', 'budget','sales'])
+    df = pd.DataFrame(np.random.randint(0,100,size=(100, 6)), columns=['data','ristorante','planned_hours','actual_hours', 'budget','sales'])
     dir = Path.cwd()
     df.to_csv(dir/'init_db.csv', index=False)
 
