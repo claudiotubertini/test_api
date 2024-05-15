@@ -39,8 +39,8 @@ app.add_middleware(
     expose_headers=["*"],
 )
 
-# Non è necessario usare Pydantic per definire il modello per la configurazione del database
-# di questa applicazione
+# Non è necessario usare Pydantic con
+# questa applicazione
 #
 # class dataset(BaseModel):
 #     date: datetime
@@ -55,8 +55,6 @@ app.add_middleware(
 class OrdName(str, Enum):
     desc = "DESC"
     asc = "ASC"
-
-
 
 
 @app.post("/uploadfile/")
@@ -79,15 +77,15 @@ async def create_upload_file(request: Request, file: UploadFile):
 async def read_restaurant(name: str):
     with sqlite3.connect('test_app.db') as conn:
         df = pd.read_sql(f"SELECT * FROM ristoranti WHERE restaurant = '{name}'", conn)
-    return df.to_dict(orient='records')
-
+    #return df.to_dict(orient='records')
+    return Response(df.to_json(orient="records"), media_type="application/json")
 
 @app.get("/ristoranti/{name}/{date}")
 async def get_restaurant_by_date(
     name: str, 
     order_by: str,
     _ord: OrdName = OrdName.asc,
-    date: datetime | None = None, 
+    date: str | None = None, 
     date__lte: str | None = None, 
     date__gte: str | None = None):
     with sqlite3.connect('test_app.db') as conn:
@@ -100,8 +98,7 @@ async def get_restaurant_by_date(
         elif date__gte and not(date or date__lte):
             df = pd.read_sql(f"""SELECT date, restaurant, hours, amount, SUM(budget) AS totbudget, SUM(sells) AS totsells
                          FROM ristoranti WHERE restaurant = '{name}' AND date >= '{date__gte}' ORDER BY {order_by} {_ord}""", conn)
-        
-    return df.to_dict(orient='records')
+    return Response(df.to_json(orient="records"), media_type="application/json")
 
 
 # Start the FastAPI server

@@ -1,3 +1,5 @@
 # test_api
 
-Le indicazioni per la creazione del file csv e su come usare il programma da console (basato su 'click') si trovano all'interno del file
+Il programma sviluppato con click carica un file csv su un database. (Nota: lo avevo già scritto prima che mi mandaste il file con i dati
+di esempio ma l'ho lasciato anche se ora è un inutile)
+L'applicazione FastApi carica un file sul database e restituisce i json con i dati caricati.
