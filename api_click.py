@@ -29,9 +29,9 @@ def cli():
 @click.option('--sep')
 def upload(filename, sep):
     """
-    Importa il file csv sulla directory scelta. Il nome del file è opzionale, se non specificato 
-    il programma caricherà il file 'db_caricato.csv' nella directory corrente. NON indicare l'estensione del file.
-    Il separatore è opzionale, se non specificato il programma utilizzerà il separatore di default della libreria pandas.
+    Importa il file csv in sqlite. Il nome del file è opzionale, se non specificato 
+    il programma caricherà il file 'dataset.csv' in sqlite. NON indicare l'estensione del file.
+    Il separatore è opzionale e serve per il file di output, se non specificato il programma utilizzerà il separatore di default della libreria pandas.
     """
     if not filename:
         filename = 'dataset'
@@ -39,7 +39,7 @@ def upload(filename, sep):
         filename = filename
     if not sep:
         sep = ','
-    df = pd.read_csv('dataset.csv')
+    df = pd.read_csv(f'{filename}.csv')
     df['hours'] = df['planned_hours'] - df['actual_hours']
     df['amount'] = df['budget'] - df['selles']
     with sqlite3.connect('test_app.db') as conn:
